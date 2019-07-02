@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+""" class Place """
 from models.base_model import BaseModel
 
 
@@ -15,8 +16,7 @@ class Place(BaseModel):
     latitude: float - 0.0
     longitude: float - 0.0
     amenity_ids: list of string - empty list:
-    it will be the list of Amenity.id later
-    """
+    it will be the list of Amenity.id later """
     city_id = ""
     user_id = ""
     name = ""
@@ -30,6 +30,6 @@ class Place(BaseModel):
     amenity_ids = amenities[]
 
     def __init__(self, *args, **kwargs):
-        """ init method call method of the super class """
-        """instantiates a new user"""
+        """ init method call method of the super class
+        instantiates a new place """
         super().__init__(self, *args, **kwargs)
