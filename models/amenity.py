@@ -1,16 +1,14 @@
 #!/usr/bin/python3
-""" class User """
+""" class Amenity """
 from models.base_model import BaseModel
 
 
-class User(BaseModel):
-    """ Class User for create users of application """
-    email = ""
-    password = ""
-    first_name = ""
-    last_name = ""
+class Amenity(BaseModel):
+    """ Class Amenity for create amenities of application
+    name: string - empty string """
+    name = ""
 
     def __init__(self, *args, **kwargs):
         """ init method call method of the super class
-        instantiates a new user """
+        instantiates a new amenity"""
         super().__init__(self, *args, **kwargs)

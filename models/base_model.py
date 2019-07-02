@@ -1,18 +1,18 @@
 #!/usr/bin/python3
 """ Class BaseModel"""
-import uuid
+from uuid import uuid4
 import models
 from datetime import datetime
 
 
 class BaseModel():
-    """ init function of BaseModel
-    if **kwargs is not empty create a new instance whit
-    the values sended
-    else create a new instance with the default values"""
+    """ Super class model for class application """
 
     def __init__(self, *args, **kwargs):
-        """ init method """
+        """init function of BaseModel
+        if **kwargs is not empty create a new instance whit
+        the values sended
+        else create a new instance with the default values"""
         if kwargs:
             for key, val in kwargs.items():
                 if key != "__class__":
@@ -20,7 +20,7 @@ class BaseModel():
                         val = datetime.strptime(val, '%Y-%m-%dT%H:%M:%S.%f')
                         setattr(self, key, val)
         else:
-            self.id = str(uuid.uuid4())
+            self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = self.created_at
             models.storage.new(self)
