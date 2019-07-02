@@ -2,6 +2,10 @@
 """ Class FileStorage """
 from os.path import exists
 from json import dump, load, dumps
+from models import base_model, user
+
+BaseModel = base_model.BaseModel
+User = user.User
 
 
 class FileStorage:
@@ -26,10 +30,7 @@ class FileStorage:
         (path: __file_path) """
         dict_to_json = {}
         for key, value in FileStorage.__objects.items():
-            if type(value) is dict:
-                dict_to_json[key] = value
-            else:
-                dict_to_json[key] = value.to_dict()
+            dict_to_json[key] = value.to_dict()
         with open(FileStorage.__file_path, "w", encoding='utf-8') as fil:
             dump(dict_to_json, fil)
 
@@ -38,6 +39,14 @@ class FileStorage:
         (only if the JSON file (__file_path) exists )
         otherwise, do nothing. If the file doesnt exist,
         no exception should be raised) """
+        dict_obj = {}
+        FileStorage.__objects = {}
         if (exists(FileStorage.__file_path)):
             with open(FileStorage.__file_path, "r") as fil:
-                FileStorage.__objects = load(fil)
+                dict_obj = load(fil)
+                for key, value in dict_obj.items():
+                    class_nm = key.split(".")[0]
+                    if class_nm == "BaseModel":
+                        BaseModel(value)
+                    elif class_nm == "User":
+                        User(value)
