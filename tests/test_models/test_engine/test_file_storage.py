@@ -1,9 +1,11 @@
 #!/usr/bin/python3
-""" unit test for class BaseModel """
+""" unit test for class FileStorage """
 
 import models
 import unittest
+from os import exists, remove
 
+FileStorage = models.engine.file_storage.FileStorage
 BaseModel = models.base_model.BaseModel
 
 
@@ -12,49 +14,51 @@ class TestBaseModelDocs(unittest.TestCase):
 
     def test_doc_module(self):
         """ validate documentation module """
-        doc = models.base_model.__doc__
+        doc = models.engine.file_storage.__doc__
         assert doc is not None
 
     def test_doc_class(self):
         """ validate documentation class """
-        doc = BaseModel.__doc__
+        doc = FileStorage.__doc__
         assert doc is not None
 
     def test_doc_methods_class(self):
         """ validate documentation methods """
-        l_meth = ["save", "__init__", "__str__", "to_dict"]
-        for key in BaseModel.__dict__.keys():
+        l_meth = ["all", "new", "save", "reload"]
+        for key in FileStorage.__dict__.keys():
             if key is l_meth:
                 doc = key.__doc__
                 assert doc is not None
 
 
-class TestBaseModelInstances(unittest.TestCase):
+class TestFileStorageInstances(unittest.TestCase):
     """ validate creation objects and use methods """
     def setUp(self):
-        """create object new BaseModel """
+        """create object new BaseModel and FileStorage """
         self.new_model = BaseModel()
+        self.storage = FileStorage()
 
     def test_create_object(self):
         """ validate created instance """
-        self.assertIsInstance(self.new_model, BaseModel)
+        self.assertIsInstance(self.storage, FileStorage)
 
-    def test_string_representation(self):
-        """ validate string representation """
-        rep_str = str(self.new_model)
-        list_att = ['BaseModel', 'id', 'created_at', 'updated_at']
-        num_att = 0
-        for att in list_att:
-            if att in rep_str:
-                num_att += 1
-        self.assertTrue(4 == num_att)
+    def test_method_all(self):
+        """ validate return all objects """
+        id_object =  self.new_model.id
+        objects =  storage.all()
+        for key in objects.keys():
+            self.assertTrue(id_object in key)
 
     def test_method_save(self):
         """ validate save method """
-        current = self.new_model.updated_at
+        os.remove(File_storage.__file_path)
         self.new_model.save()
-        new = self.new_model.updated_at
-        self.assertNotEqual(current, new)
+        id_object = self.new_model.id
+        if (exists(FileStorage.__file_path)):
+            with open(FileStorage.__file_path, "r") as fil:
+                dict_obj = load(fil)
+        for key in dict_obj.keys():
+            self.assertTrue(id_object in key)
 
     def test_add_attributes(self):
         """ add attributes to object"""
