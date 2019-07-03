@@ -11,6 +11,8 @@ State = state.State
 City = city.City
 Amenity = amenity.Amenity
 Review = review.Review
+name_class = ["BaseModel", "City", "State", "Place",
+              "Amenity", "Review", "User"]
 
 
 class FileStorage:
@@ -51,19 +53,7 @@ class FileStorage:
                 dict_obj = load(fil)
                 for key, value in dict_obj.items():
                     class_nm = key.split(".")[0]
-                    if class_nm == "BaseModel":
-                        BaseModel(value)
-                    elif class_nm == "User":
-                        User(value)
-                    elif class_nm == "City":
-                        City(value)
-                    elif class_nm == "Place":
-                        Place(value)
-                    elif class_nm == "State":
-                        State(value)
-                    elif class_nm == "Amenity":
-                        Amenity(value)
-                    elif class_nm == "Review":
-                        Review(value)
+                    if class_nm in name_class:
+                        FileStorage.__objects[key] = eval(class_nm)(**value)
                     else:
                         pass
