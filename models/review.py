@@ -3,7 +3,7 @@
 from models.base_model import BaseModel
 
 
-class City(BaseModel):
+class Review(BaseModel):
     """ Class review for create reviewes of application
     place_id: string - empty string: it will be the Place.id
     user_id: string - empty string: it will be the User.id
