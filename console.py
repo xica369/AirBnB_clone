@@ -3,8 +3,20 @@
 of the command interpreter
 """
 import cmd
-from models import base_model
+import shlex
+from models import base_model, storage, user, place, state, city, amenity
+from models import review
 from models.engine import file_storage
+
+BaseModel = base_model.BaseModel
+FileStorage = file_storage.FileStorage
+User = user.User
+Place = place.Place
+State = state.State
+City = city.City
+Amenity = amenity.Amenity
+Review = review.Review
+NClass = ["BaseModel", "User", "Place", "State", "City", "Amenity", "Review"]
 
 
 class HBNBCommand(cmd.Cmd):
@@ -22,6 +34,11 @@ class HBNBCommand(cmd.Cmd):
         """
         return(True)
 
+    def emptyline(self):
+        """It does not perform any action
+        """
+        pass
+
     def do_create(self, args):
         """create: Creates a new instance of BaseModel,
         saves it (to the JSON file)
@@ -29,13 +46,12 @@ class HBNBCommand(cmd.Cmd):
         If the class name is missing, print ** class name missing **
         If the class name doesnt exist, print ** class doesn't exist **
         """
-        arguments = args.split()
+        arguments = shlex.split(args)
         if len(arguments) == 0:
             print("** class name missing **")
-        elif len(arguments) == 2 and arguments[1] == "BaseModel":
-            new_base_model = BaseModel()
-            FileStorage.new(new_base_model)
-            FileStorage.save()
+        elif len(arguments) == 1 and arguments[0] in NClass:
+            new_base_model = eval(arguments[0])()
+            new_base_model.save()
             print("{}".format(new_base_model.id))
         else:
             print("** class doesn't exist **")
@@ -50,16 +66,17 @@ class HBNBCommand(cmd.Cmd):
         If the instance of the class name doesnt exist for the id,
         print ** no instance found **
         """
-        arguments = args.split()
-        if len(argments) == 0:
+        arguments = shlex.split(args)
+        if len(arguments) == 0:
             print("** class name missing **")
-        else:
-            if arguments[0] is not "BaseModel":
-                print("** class doesn't exist **")
-            if len(arguments) < 2:
-                print("** instance id missing **")
+        elif len(arguments) >= 1 and arguments[0] not in NClass:
+            print("** class doesn't exist **")
+        elif len(arguments) == 1 and arguments[0] in NClass:
+            print("** instance id missing **")
+        elif len(arguments) == 2:
             flag = 0
-            for key, value in FileStorage.__objects.items():
+            dic = storage.all()
+            for key, value in dic.items():
                 _id = key.split(".")[1]
                 if _id == arguments[1]:
                     flag = 1
@@ -78,39 +95,42 @@ class HBNBCommand(cmd.Cmd):
         If the instance of the class name doesnt exist for the id,
         print ** no instance found **
         """
-        arguments = args.split()
+        arguments = shlex.split(args)
         if len(arguments) == 0:
             print("** class name missing **")
-        else:
-            if arguments[0] is not "BaseModel":
-                print("** class doesn't exist **")
-            if len(arguments) < 2:
-                print("** instance id missing **")
-            if len(arguments) == 2:
-                flag = 0
-                for key, value in FileStorage.__objects.items():
-                    _id = key.split(".")[1]
-                    if _id == arguments[1]:
-                        flag = 1
-                        del FileStorage.__objects[key]
-                        FileStorage.save()
-                        break
-                if flag == 0:
-                    print("** no instance found **")
+        elif len(arguments) >= 1 and arguments[0] not in NClass:
+            print("** class doesn't exist **")
+        elif len(arguments) == 1 and arguments[0] in NClass:
+            print("** instance id missing **")
+        elif len(arguments) == 2:
+            flag = 0
+            dic = storage.all()
+            for key, value in dic.items():
+                _id = key.split(".")[1]
+                if _id == arguments[1]:
+                    flag = 1
+                    del dic[key]
+                    storage.save()
+                    break
+            if flag == 0:
+                print("** no instance found **")
 
     def do_all(self, args):
         """all: Prints a list with all string representation of all instances
         based or not on the class name. Ex: $ all BaseModel or $ all
         If the class name doesnt exist, print ** class doesn't exist **
         """
-        arguments = args.split()
-        if len(arguments) == 1 and arguments[0] is not "BaseModel":
+        arguments = shlex.split(args)
+        dic = storage.all()
+        if len(arguments) == 1 and arguments[0] not in NClass:
             print("** class doesn't exist **")
-        if len(arguments) > 1:
-            pass
-        else:
-            for key, value in FileStorage.__objects.items():
+        elif len(arguments) == 0:
+            for key, value in dic.items():
                 print(value)
+        elif len(arguments) == 1 and arguments[0] in NClass:
+            for key, value in dic.items():
+                if arguments[0] in key:
+                    print(value)
 
     def do_update(self, args):
         """update:  Updates an instance based on the class name and id
@@ -125,31 +145,26 @@ class HBNBCommand(cmd.Cmd):
         If the value for the attribute name doesnt exist,
         print ** value missing **
         """
-        arguments = args.split()
-        flag = 0
-        if len(arguments == 0):
+        arguments = shlex.split(args)
+        dic = storage.all()
+        if len(arguments) >= 2:
+            name = arguments[0] + "." + arguments[1]
+        if len(arguments) == 0:
             print("** class name missing **")
-        if len(arguments) > 0 and arguments[0] is not "BaseModel":
-            prints("** class doesn't exist **")
-            flag1 = 1
-        if len(arguments == 1):
+        elif len(arguments) > 0 and arguments[0] not in NClass:
+            print("** class doesn't exist **")
+        elif len(arguments) == 1:
             print("** instance id missing **")
-        flag1 = 0
-        for key, value in FileStorage.__objects.items():
-            _id = key.split(".")[1]
-            if _id == arguments[1]:
-                flag = 1
-                break
-        if flag == 0:
+        elif len(arguments) == 2 and name not in dic:
             print("** no instance found **")
-        if len(arguments) == 2:
+        elif len(arguments) == 2:
             print("** attribute name missing **")
-        flag2 = 0
-        #verificar que el attribute name es existe, si existe flag2 = 1
-        if len(arguments) == 3:
+        elif len(arguments) == 3:
             print("** value missing **")
-        if len(arguments) > 3 and flag == 0 and flag1 == 1 and flag2 == 1:
-            #actualizar datos
+        else:
+            obj = dic[name]
+            setattr(obj, arguments[2], arguments[3])
+            obj.save()
 
 
 if __name__ == "__main__":
