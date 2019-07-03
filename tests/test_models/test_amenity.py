@@ -7,6 +7,7 @@ import unittest
 BaseModel = models.base_model.BaseModel
 Amenity = models.amenity.Amenity
 
+
 class TestBaseModelDocs(unittest.TestCase):
     """ validate docstring in the class """
 

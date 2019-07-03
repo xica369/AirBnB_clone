@@ -7,6 +7,7 @@ import unittest
 BaseModel = models.base_model.BaseModel
 User = models.user.User
 
+
 class TestBaseModelDocs(unittest.TestCase):
     """ validate docstring in the class """
 
