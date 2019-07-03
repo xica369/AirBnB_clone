@@ -36,13 +36,12 @@ class TestBaseModelDocs(unittest.TestCase):
 
 class TestFileStorageInstances(unittest.TestCase):
     """ validate creation objects and use methods """
-    @classmethod
     def setUp(self):
         """create object new BaseModel and FileStorage """
         self.new_model = BaseModel()
         self.storage = FileStorage()
 
-    def test_create_object(self):
+    def test_mehotd_new(self):
         """ validate created instance """
         self.assertIsInstance(self.storage, FileStorage)
 
