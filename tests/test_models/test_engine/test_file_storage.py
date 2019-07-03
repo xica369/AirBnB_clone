@@ -3,10 +3,13 @@
 
 import models
 import unittest
-from os import exists, remove
+from json import load
+from os.path import exists
+from os import remove
 
 FileStorage = models.engine.file_storage.FileStorage
 BaseModel = models.base_model.BaseModel
+file_path = "objects.json"
 
 
 class TestBaseModelDocs(unittest.TestCase):
@@ -33,6 +36,7 @@ class TestBaseModelDocs(unittest.TestCase):
 
 class TestFileStorageInstances(unittest.TestCase):
     """ validate creation objects and use methods """
+    @classmethod
     def setUp(self):
         """create object new BaseModel and FileStorage """
         self.new_model = BaseModel()
@@ -44,21 +48,29 @@ class TestFileStorageInstances(unittest.TestCase):
 
     def test_method_all(self):
         """ validate return all objects """
-        id_object =  self.new_model.id
-        objects =  storage.all()
-        for key in objects.keys():
-            self.assertTrue(id_object in key)
+        id_object = self.new_model.id
+        cl_nm = self.new_model.__class__.__name__
+        cl_id = cl_nm + "." + id_object
+        objects = self.storage.all()
+        flag = 0
+        if cl_id in objects:
+            flag = 1
+        self.assertEqual(1, flag)
 
     def test_method_save(self):
         """ validate save method """
-        os.remove(File_storage.__file_path)
+        remove(file_path)
         self.new_model.save()
         id_object = self.new_model.id
-        if (exists(FileStorage.__file_path)):
-            with open(FileStorage.__file_path, "r") as fil:
+        cl_nm = self.new_model.__class__.__name__
+        cl_id = cl_nm + "." + id_object
+        if(exists(file_path)):
+            with open(file_path, "r") as fil:
                 dict_obj = load(fil)
-        for key in dict_obj.keys():
-            self.assertTrue(id_object in key)
+        flag = 0
+        if cl_id in dict_obj:
+            flag = 1
+        self.assertEqual(1, flag)
 
     def test_add_attributes(self):
         """ add attributes to object"""
@@ -79,6 +91,12 @@ class TestFileStorageInstances(unittest.TestCase):
             if att in list_att:
                 num_att += 1
         self.assertTrue(6 == num_att)
+
+    def test_method_reload(self):
+        self.storage.reload()
+        dict_obj = self.storage.all()
+        self.assertTrue(len(dict_obj) > 0)
+
 
 if __name__ == '__main__':
     unittest.main()
