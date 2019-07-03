@@ -2,10 +2,15 @@
 """ Class FileStorage """
 from os.path import exists
 from json import dump, load, dumps
-from models import base_model, user
+from models import base_model, user, place, state, city, amenity, review
 
 BaseModel = base_model.BaseModel
 User = user.User
+Place = place.Place
+State = state.State
+City = city.City
+Amenity = amenity.Amenity
+Review = review.Review
 
 
 class FileStorage:
@@ -50,3 +55,15 @@ class FileStorage:
                         BaseModel(value)
                     elif class_nm == "User":
                         User(value)
+                    elif class_nm == "City":
+                        City(value)
+                    elif class_nm == "Place":
+                        Place(value)
+                    elif class_nm == "State":
+                        State(value)
+                    elif class_nm == "Amenity":
+                        Amenity(value)
+                    elif class_nm == "Review":
+                        Review(value)
+                    else:
+                        pass
