@@ -172,6 +172,9 @@ class HBNBCommand(cmd.Cmd):
         If the value for the attribute name doesnt exist,
         print ** value missing **
         """
+        list_int = ["number_rooms", "number_bathrooms",
+                    "max_guest", "price_by_night"]
+        list_float = ["latitude", "longitude"]
         arguments = shlex.split(args)
         dic = storage.all()
         if len(arguments) >= 2:
@@ -191,7 +194,12 @@ class HBNBCommand(cmd.Cmd):
         else:
             if arguments[2] != "created_at" and arguments[2] != "updated_at":
                 obj = dic[name]
-                setattr(obj, arguments[2], arguments[3])
+                if arguments[2] in list_int:
+                    setattr(obj, arguments[2], int(arguments[3]))
+                if arguments[2] in list_float:
+                    setattr(obj, arguments[2], float(arguments[3]))
+                else:
+                    setattr(obj, arguments[2], arguments[3])
                 obj.save()
 
 
