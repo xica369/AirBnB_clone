@@ -169,6 +169,13 @@ class HBNBCommand(cmd.Cmd):
                 setattr(obj, arguments[2], arguments[3])
                 obj.save()
 
+    def default(self, args):
+        """default function
+        """
+        arguments = args.split(".")
+        if arguments[1] == "all()":
+            self.do_all(arguments[0])
+
 
 if __name__ == "__main__":
     interprete = HBNBCommand()
