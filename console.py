@@ -53,6 +53,9 @@ class HBNBCommand(cmd.Cmd):
                     if arguments[0] in key:
                         cont = cont + 1
                 print(cont)
+            if "show" in arguments[1]:
+                temp = arguments[1].split('"')
+                self.do_show(arguments[0] + " " + temp[1])
 
     def do_create(self, args):
         """create: Creates a new instance of BaseModel,
