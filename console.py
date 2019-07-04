@@ -122,15 +122,17 @@ class HBNBCommand(cmd.Cmd):
         """
         arguments = shlex.split(args)
         dic = storage.all()
+        list_obj = []
         if len(arguments) == 1 and arguments[0] not in NClass:
             print("** class doesn't exist **")
         elif len(arguments) == 0:
             for key, value in dic.items():
-                print(value)
+                list_obj.append(str(value))
         elif len(arguments) == 1 and arguments[0] in NClass:
             for key, value in dic.items():
                 if arguments[0] in key:
-                    print(value)
+                    list_obj.append(str(value))
+        print(list_obj)
 
     def do_update(self, args):
         """update:  Updates an instance based on the class name and id
@@ -162,9 +164,10 @@ class HBNBCommand(cmd.Cmd):
         elif len(arguments) == 3:
             print("** value missing **")
         else:
-            obj = dic[name]
-            setattr(obj, arguments[2], arguments[3])
-            obj.save()
+            if arguments[2] != "created_at" and arguments[2] != "updated_at":
+                obj = dic[name]
+                setattr(obj, arguments[2], arguments[3])
+                obj.save()
 
 
 if __name__ == "__main__":
