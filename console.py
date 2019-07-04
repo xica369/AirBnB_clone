@@ -166,9 +166,6 @@ class HBNBCommand(cmd.Cmd):
         If the value for the attribute name doesnt exist,
         print ** value missing **
         """
-        list_int = ["number_rooms", "number_bathrooms",
-                    "max_guest", "price_by_night"]
-        list_float = ["latitude", "longitude"]
         arguments = shlex.split(args)
         dic = storage.all()
         if len(arguments) >= 2:
@@ -179,7 +176,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         elif len(arguments) == 1:
             print("** instance id missing **")
-        elif len(arguments) == 2 and name not in dic:
+        elif name not in dic:
             print("** no instance found **")
         elif len(arguments) == 2:
             print("** attribute name missing **")
