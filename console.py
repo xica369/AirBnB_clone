@@ -96,18 +96,14 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         elif len(arguments) >= 1 and arguments[0] not in NClass:
             print("** class doesn't exist **")
-        elif len(arguments) == 1 and arguments[0] in NClass:
+        elif len(arguments) == 1:
             print("** instance id missing **")
         else:
-            flag = 0
             dic = storage.all()
-            for key, value in dic.items():
-                _id = key.split(".")[1]
-                if _id == arguments[1]:
-                    flag = 1
-                    print(value)
-                    break
-            if flag == 0:
+            name_cl = arguments[0] + "." + arguments[1]
+            if name_cl in dic:
+                print(dic[name_cl])
+            else:
                 print("** no instance found **")
 
     def do_destroy(self, args):
@@ -128,16 +124,13 @@ class HBNBCommand(cmd.Cmd):
         elif len(arguments) == 1 and arguments[0] in NClass:
             print("** instance id missing **")
         else:
-            flag = 0
             dic = storage.all()
-            for key, value in dic.items():
-                _id = key.split(".")[1]
-                if _id == arguments[1]:
-                    flag = 1
-                    del dic[key]
-                    storage.save()
-                    break
-            if flag == 0:
+            dic = storage.all()
+            name_cl = arguments[0] + "." + arguments[1]
+            if name_cl in dic:
+                del dic[name_cl]
+                storage.save()
+            else:
                 print("** no instance found **")
 
     def do_all(self, args):
@@ -148,16 +141,17 @@ class HBNBCommand(cmd.Cmd):
         arguments = shlex.split(args)
         dic = storage.all()
         list_obj = []
-        if len(arguments) == 1 and arguments[0] not in NClass:
+        if len(arguments) >= 1 and arguments[0] not in NClass:
             print("** class doesn't exist **")
         elif len(arguments) == 0:
             for key, value in dic.items():
                 list_obj.append(str(value))
-        elif len(arguments) == 1 and arguments[0] in NClass:
+            print(list_obj)
+        elif len(arguments) >= 1 and arguments[0] in NClass:
             for key, value in dic.items():
                 if arguments[0] in key:
                     list_obj.append(str(value))
-        print(list_obj)
+            print(list_obj)
 
     def do_update(self, args):
         """update:  Updates an instance based on the class name and id
