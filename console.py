@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         elif len(arguments) == 1 and arguments[0] in NClass:
             print("** instance id missing **")
-        elif len(arguments) == 2:
+        else:
             flag = 0
             dic = storage.all()
             for key, value in dic.items():
@@ -102,7 +102,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         elif len(arguments) == 1 and arguments[0] in NClass:
             print("** instance id missing **")
-        elif len(arguments) == 2:
+        else:
             flag = 0
             dic = storage.all()
             for key, value in dic.items():
