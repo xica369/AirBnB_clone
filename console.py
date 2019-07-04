@@ -186,15 +186,9 @@ class HBNBCommand(cmd.Cmd):
         elif len(arguments) == 3:
             print("** value missing **")
         else:
-            if arguments[2] != "created_at" and arguments[2] != "updated_at":
-                obj = dic[name]
-                if arguments[2] in list_int:
-                    setattr(obj, arguments[2], int(arguments[3]))
-                if arguments[2] in list_float:
-                    setattr(obj, arguments[2], float(arguments[3]))
-                else:
-                    setattr(obj, arguments[2], arguments[3])
-                obj.save()
+            obj = dic[name]
+            setattr(obj, arguments[2], arguments[3])
+            obj.save()
 
 
 if __name__ == "__main__":
