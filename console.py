@@ -42,6 +42,22 @@ class HBNBCommand(cmd.Cmd):
     def default(self, args):
         """default function
         """
+        if "update" in args and "{" in args:
+            tmp = args.split(",")
+            iden = tmp[0]
+            clas = iden.split(".")
+            clas = clas[0]
+            iden = iden.split('"')
+            iden = iden[1]
+            del tmp[0]
+            argum = ", ".join(tmp)
+            argum = argum[0:-1]
+            argum = argum.replace("'", "\"")
+            dic = eval(argum)
+            for key in dic:
+                self.do_update(clas + " " + iden +
+                               " " + key + " " + str(dic[key]))
+            return
         arguments = args.split(".")
         if len(arguments) > 1:
             if arguments[1] == "all()":
