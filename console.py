@@ -39,6 +39,21 @@ class HBNBCommand(cmd.Cmd):
         """
         pass
 
+    def default(self, args):
+        """default function
+        """
+        arguments = args.split(".")
+        if len(arguments) > 1:
+            if arguments[1] == "all()":
+                self.do_all(arguments[0])
+            if arguments[1] == "count()":
+                cont = 0
+                dic = storage.all()
+                for key, value in dic.items():
+                    if arguments[0] in key:
+                        cont = cont + 1
+                print(cont)
+
     def do_create(self, args):
         """create: Creates a new instance of BaseModel,
         saves it (to the JSON file)
@@ -168,13 +183,6 @@ class HBNBCommand(cmd.Cmd):
                 obj = dic[name]
                 setattr(obj, arguments[2], arguments[3])
                 obj.save()
-
-    def default(self, args):
-        """default function
-        """
-        arguments = args.split(".")
-        if arguments[1] == "all()":
-            self.do_all(arguments[0])
 
 
 if __name__ == "__main__":
