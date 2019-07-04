@@ -1,12 +1,12 @@
 #!/usr/bin/python3
-""" unit test for class BaseModel """
+""" unit test for class Review """
 
 from models.review import Review
 import unittest
 import pep8
 
 
-class TestBaseModelDocs(unittest.TestCase):
+class TestReviewDocs(unittest.TestCase):
     """ validate docstring in the class """
 
     def test_doc_class(self):
@@ -23,7 +23,7 @@ class TestBaseModelDocs(unittest.TestCase):
                 assert doc is not None
 
 
-class TestBaseModelInstances(unittest.TestCase):
+class TestReviewInstances(unittest.TestCase):
     """ validate creation objects and use methods """
     @classmethod
     def setUpClass(cls):
