@@ -1,20 +1,13 @@
 #!/usr/bin/python3
 """ unit test for class BaseModel """
 
-import models
+from models.place import Place
 import unittest
-
-BaseModel = models.base_model.BaseModel
-Place = models.place.Place
+import pep8
 
 
 class TestBaseModelDocs(unittest.TestCase):
     """ validate docstring in the class """
-
-    def test_doc_module(self):
-        """ validate documentation module """
-        doc = models.place.__doc__
-        assert doc is not None
 
     def test_doc_class(self):
         """ validate documentation class """
@@ -32,9 +25,13 @@ class TestBaseModelDocs(unittest.TestCase):
 
 class TestBaseModelInstances(unittest.TestCase):
     """ validate creation objects and use methods """
-    def setUp(self):
-        """create object new BaseModel """
-        self.new_place = Place()
+    @classmethod
+    def setUpClass(cls):
+        ''' new_place up '''
+        cls.new_place = Place()
+        cls.new_place.name = "Hotel"
+        cls.new_place.save()
+        cls.new_place_str = cls.new_place.to_dict()
 
     def test_create_object(self):
         """ validate created instance """
@@ -64,6 +61,13 @@ class TestBaseModelInstances(unittest.TestCase):
         expected = ["Hotel"]
         self.assertEqual(expected, list_att)
 
+    def test_hasMethods(self):
+        ''' test the instance have the methods  '''
+        self.assertTrue(hasattr(self.new_place, '__str__'))
+        self.assertTrue(hasattr(self.new_place, '__init__'))
+        self.assertTrue(hasattr(self.new_place, 'to_dict'))
+        self.assertTrue(hasattr(self.new_place, 'save'))
+
     def test_method_to_dict(self):
         self.new_place.name = "Hotel"
         dict_rep = self.new_place.to_dict()
@@ -74,6 +78,26 @@ class TestBaseModelInstances(unittest.TestCase):
             if att in list_att:
                 num_att += 1
         self.assertTrue(5 == num_att)
+
+    def test_pep8_conformance(self):
+        ''' Test that we conform to PEP8 '''
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files([
+                                        'models/place.py',
+                                        'tests/test_models/test_place.py'
+                                        ])
+        self.assertEqual(result.total_errors, 0,
+                         "Found code style errors (and warnings).")
+
+    @classmethod
+    def tearDownClass(cls):
+        ''' new_place Down '''
+        del cls.new_place
+        try:
+            os.remove("objects.json")
+        except BaseException:
+            pass
+
 
 if __name__ == '__main__':
     unittest.main()

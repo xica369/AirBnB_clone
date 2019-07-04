@@ -1,20 +1,13 @@
 #!/usr/bin/python3
 """ unit test for class BaseModel """
 
-import models
+from models.review import Review
 import unittest
-
-BaseModel = models.base_model.BaseModel
-Review = models.review.Review
+import pep8
 
 
 class TestBaseModelDocs(unittest.TestCase):
     """ validate docstring in the class """
-
-    def test_doc_module(self):
-        """ validate documentation module """
-        doc = models.review.__doc__
-        assert doc is not None
 
     def test_doc_class(self):
         """ validate documentation class """
@@ -32,9 +25,13 @@ class TestBaseModelDocs(unittest.TestCase):
 
 class TestBaseModelInstances(unittest.TestCase):
     """ validate creation objects and use methods """
-    def setUp(self):
-        """create object new BaseModel """
-        self.new_review = Review()
+    @classmethod
+    def setUpClass(cls):
+        ''' new_review up '''
+        cls.new_review = Review()
+        cls.new_review.text = "Comment"
+        cls.new_review.save()
+        cls.new_review_str = cls.new_review.to_dict()
 
     def test_create_object(self):
         """ validate created instance """
@@ -57,6 +54,13 @@ class TestBaseModelInstances(unittest.TestCase):
         new = self.new_review.updated_at
         self.assertNotEqual(current, new)
 
+    def test_hasMethods(self):
+        ''' test the instance have the methods  '''
+        self.assertTrue(hasattr(self.new_review, '__str__'))
+        self.assertTrue(hasattr(self.new_review, '__init__'))
+        self.assertTrue(hasattr(self.new_review, 'to_dict'))
+        self.assertTrue(hasattr(self.new_review, 'save'))
+
     def test_add_attributes(self):
         """ add attributes to object"""
         self.new_review.text = "Comments"
@@ -74,6 +78,26 @@ class TestBaseModelInstances(unittest.TestCase):
             if att in list_att:
                 num_att += 1
         self.assertTrue(5 == num_att)
+
+    def test_pep8_conformance(self):
+        ''' Test that we conform to PEP8 '''
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files([
+                                        'models/review.py',
+                                        'tests/test_models/test_review.py'
+                                        ])
+        self.assertEqual(result.total_errors, 0,
+                         "Found code style errors (and warnings).")
+
+    @classmethod
+    def tearDownClass(cls):
+        ''' new_review Down '''
+        del cls.new_review
+        try:
+            os.remove("objects.json")
+        except BaseException:
+            pass
+
 
 if __name__ == '__main__':
     unittest.main()
