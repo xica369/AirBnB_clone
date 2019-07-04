@@ -42,6 +42,7 @@ class HBNBCommand(cmd.Cmd):
     def default(self, args):
         """default function
         <class name>.all()
+        <class name>.count()
         """
         arguments = args.split(".")
         if len(arguments) > 1:
