@@ -41,6 +41,7 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, args):
         """default function
+        <class name>.all()
         """
         arguments = args.split(".")
         if len(arguments) > 1:
