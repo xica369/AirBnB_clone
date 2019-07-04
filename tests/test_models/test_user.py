@@ -1,20 +1,13 @@
 #!/usr/bin/python3
 """ unit test for class BaseModel """
 
-import models
+from models.user import User
 import unittest
-
-BaseModel = models.base_model.BaseModel
-User = models.user.User
+import pep8
 
 
 class TestBaseModelDocs(unittest.TestCase):
     """ validate docstring in the class """
-
-    def test_doc_module(self):
-        """ validate documentation module """
-        doc = models.user.__doc__
-        assert doc is not None
 
     def test_doc_class(self):
         """ validate documentation class """
@@ -90,6 +83,26 @@ class TestBaseModelInstances(unittest.TestCase):
             if att in list_att:
                 num_att += 1
         self.assertTrue(6 == num_att)
+
+    def test_pep8_conformance(self):
+        ''' Test that we conform to PEP8 '''
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files([
+                                        'models/user.py',
+                                        'tests/test_models/test_user.py'
+                                        ])
+        self.assertEqual(result.total_errors, 0,
+                         "Found code style errors (and warnings).")
+
+    @classmethod
+    def tearDownClass(cls):
+        ''' new_user Down '''
+        del cls.new_user
+        try:
+            os.remove("file.json")
+        except BaseException:
+            pass
+
 
 if __name__ == '__main__':
     unittest.main()
