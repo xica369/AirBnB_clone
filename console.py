@@ -59,6 +59,10 @@ class HBNBCommand(cmd.Cmd):
             if "destroy" in arguments[1]:
                 temp = arguments[1].split('"')
                 self.do_destroy(arguments[0] + " " + temp[1])
+            if "update" in arguments[1]:
+                temp = arguments[1].split('"')
+                self.do_update(arguments[0] + " " + temp[1] +
+                               " " + temp[3] + " " + temp[5])
 
     def do_create(self, args):
         """create: Creates a new instance of BaseModel,
