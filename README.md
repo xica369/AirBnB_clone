@@ -73,9 +73,14 @@ Class.COMMAND([ID], [PARAMETERS])
 ```
 
 The command available for this console are:
-* create:
-	create Class
-Allows to the user, create a instance of the class and print the id.
+* create: Allows to the user, create a instance of the class and print the id.
+
+create Class
+
+Messages:
+
+a) If the class name is missing, print ** class name missing ** (ex: $ create)
+b) If the class name doesn’t exist, print ** class doesn't exist ** (ex: $ create MyModel)
 
 example:
 
@@ -85,9 +90,17 @@ example:
 (hbnb)
 ```
 
-* show:
-	show Class ID
-Allows to the user, see the information about the ID searched.
+* show: Allows to the user, see the information about the ID searched.
+
+show Class ID
+
+Messages:
+
+a) If the class name is missing, print ** class name missing ** (ex: $ show)
+b) If the class name doesn’t exist, print ** class doesn't exist ** (ex: $ show MyModel)
+c) If the id is missing, print ** instance id missing ** (ex: $ show BaseModel)
+d) If the instance of the class name doesn’t exist for the id, print ** no instance found ** (ex: $ show BaseModel 121212)
+
 
 example:
 
@@ -97,8 +110,89 @@ example:
 (hbnb)
 ```
 
+* destroy: allow to the user, deletes an instance based on the class name and id.
+
+destroy Class ID
+
+Messages:
+
+b) If the class name is missing, print ** class name missing ** (ex: $ destroy)
+c) If the class name doesn’t exist, print ** class doesn't exist ** (ex:$ destroy MyModel)
+d) If the id is missing, print ** instance id missing ** (ex: $ destroy BaseModel)
+e) If the instance of the class name doesn’t exist for the id, print ** no instance found ** (ex: $ destroy BaseModel 121212)
+
+```bash
+(hbnb) destroy BaseModel 49faff9a-6318-451f-87b6-910505c55907
+(hbnb) show BaseModel 49faff9a-6318-451f-87b6-910505c55907
+** no instance found **
+```
+
+* all: Prints all string representation of all instances based or not on the class name.
+
+all BaseModel or all
+
+Messages:
+
+a) The printed result must be a list of strings (like the example below)
+b) If the class name doesn’t exist, print ** class doesn't exist ** (ex: $ all MyModel)
+
+example:
+
+```bash
+(hbnb) all BaseModel
+["[BaseModel] (2dd6ef5c-467c-4f82-9521-a772ea7d84e9) {'id': '2dd6ef5c-467c-4f82-9521-a772ea7d84e9', 'created_at': datetime.datetime(2017, 10, 2, 3, 11, 23, 639717), 'updated_at': datetime.datetime(2017, 10, 2, 3, 11, 23, 639724)}", "[BaseModel] (49faff9a-6318-451f-87b6-910505c55907) {'first_name': 'Betty', 'id': '49faff9a-6318-451f-87b6-910505c55907', 'created_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903293), 'updated_at': datetime.datetime(2017, 10, 2, 3, 11, 3, 49401)}"]
+(hbnb)
+```
+
+* update: Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file). Ex: $ update BaseModel 1234-1234-1234 email "aibnb@holbertonschool.com".
+
+update <class name> <id> <attribute name> "<attribute value>"
+Class.update("[id]", {attribute: value})
+
+Rules:
+- Only one attribute can be updated at the time
+- You can assume the attribute name is valid (exists for this model)
+- The attribute value must be casted to the attribute type
+- All other arguments should not be used (Ex: $ update BaseModel 1234-1234-1234 email "aibnb@holbertonschool.com" first_name "Betty" = $ update BaseModel 1234-1234-1234 email "aibnb@holbertonschool.com")
+
+Messages:
+
+a) If the class name is missing, print ** class name missing ** (ex: $ update)
+b) If the class name doesn’t exist, print ** class doesn't exist ** (ex: $ update MyModel)
+c) If the id is missing, print ** instance id missing ** (ex: $ update BaseModel)
+d) If the instance of the class name doesn’t exist for the id, print ** no instance found ** (ex: $ update BaseModel 121212)
+e) If the attribute name is missing, print ** attribute name missing ** (ex: $ update BaseModel existing-id)
+f) If the value for the attribute name doesn’t exist, print ** value missing ** (ex: $ update BaseModel existing-id first_name)
+
+example:
+
+```bash
+(hbnb) show BaseModel 49faff9a-6318-451f-87b6-910505c55907
+[BaseModel] (49faff9a-6318-451f-87b6-910505c55907) {'created_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903293), 'id': '49faff9a-6318-451f-87b6-910505c55907', 'updated_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903300)}
+(hbnb) update BaseModel 49faff9a-6318-451f-87b6-910505c55907 first_name "Betty"
+(hbnb) show BaseModel 49faff9a-6318-451f-87b6-910505c55907
+[BaseModel] (49faff9a-6318-451f-87b6-910505c55907) {'first_name': 'Betty', 'id': '49faff9a-6318-451f-87b6-910505c55907', 'created_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903293), 'updated_at': datetime.datetime(2017, 10, 2, 3, 11, 3, 49401)}
+(hbnb)
+(hbnb) User.update("38f22813-2753-4d42-b37c-57a17f1e4f88", {'first_name': "John", "age": 89})
+(hbnb) 
+(hbnb) User.show("38f22813-2753-4d42-b37c-57a17f1e4f88")
+[User] (38f22813-2753-4d42-b37c-57a17f1e4f88) {'age': 89, 'first_name': 'John', 'last_name': 'Holberton', 'created_at': datetime.datetime(2017, 9, 28, 21, 11, 42, 848279), 'updated_at': datetime.datetime(2017, 9, 28, 21, 17, 10, 788143), 'password': 'b9be11166d72e9e3ae7fd407165e4bd2', 'email': 'airbnb@holbertonshool.com', 'id': '38f22813-2753-4d42-b37c-57a17f1e4f88'}
+```
+
+* count: count the objects taht exists of the class name.
+
+Class.count()
+
+example:
 
 
+```bash
+(hbnb) User.count()
+2
+(hbnb) 
+```
+
+## AUTHORS
  
 * **Ximena Carolina Andrade Vargas** - [xica369](https://github.com/xica369)
 * **Yony Brinez Valderrama** - [arleybri18](https://github.com/arleybri18)
