@@ -75,6 +75,9 @@ Class.COMMAND([ID], [PARAMETERS])
 The command available for this console are:
 * create: Allows to the user, create a instance of the class and print the id.
 
+SYNOPSIS
+	create [CLASS NAME]
+
 create Class
 
 Messages:
@@ -91,6 +94,9 @@ example:
 ```
 
 * show: Allows to the user, see the information about the ID searched.
+
+SYNOPSIS
+	show [CLASS NAME] [ID]
 
 show Class ID
 
@@ -112,6 +118,9 @@ example:
 
 * destroy: allow to the user, deletes an instance based on the class name and id.
 
+SYNOPSIS
+	destroy [CLASS NAME] [ID]
+
 destroy Class ID
 
 Messages:
@@ -128,6 +137,10 @@ d) If the instance of the class name doesn’t exist for the id, print ** no ins
 ```
 
 * all: Prints all string representation of all instances based or not on the class name.
+
+SYNOPSIS
+	all
+	all [CLASS NAME]
 
 all BaseModel or all
 
