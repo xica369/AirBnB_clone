@@ -116,10 +116,10 @@ destroy Class ID
 
 Messages:
 
-b) If the class name is missing, print ** class name missing ** (ex: $ destroy)
-c) If the class name doesn’t exist, print ** class doesn't exist ** (ex:$ destroy MyModel)
-d) If the id is missing, print ** instance id missing ** (ex: $ destroy BaseModel)
-e) If the instance of the class name doesn’t exist for the id, print ** no instance found ** (ex: $ destroy BaseModel 121212)
+a) If the class name is missing, print ** class name missing ** (ex: $ destroy)
+b) If the class name doesn’t exist, print ** class doesn't exist ** (ex:$ destroy MyModel)
+c) If the id is missing, print ** instance id missing ** (ex: $ destroy BaseModel)
+d) If the instance of the class name doesn’t exist for the id, print ** no instance found ** (ex: $ destroy BaseModel 121212)
 
 ```bash
 (hbnb) destroy BaseModel 49faff9a-6318-451f-87b6-910505c55907
