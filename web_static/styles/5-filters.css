@@ -6,7 +6,6 @@
   border-color: #DDDDDD;
   border-radius: 4px;
   display: flex;
-  justify-content: flex-end;
   border-style: solid;
   align-items: center;
   margin-left: auto;
@@ -32,6 +31,9 @@ border-right: 1px;
 border-right-color: #DDDDDD;
 border-right-style: solid;
 }
+.filters div {
+  width: 25%;
+}
 .amenities {
   height: 100%;
   width: 25%;
@@ -39,8 +41,12 @@ border-right-style: solid;
 }
 h3 {
   font-weight: 600;
+  margin-left: 40px;
+  margin-bottom: 0px;
 }
 h4 {
   font-weight: 400;
   font-size: 14px;
+  margin-left: 40px;
+  margin-top: 3px;
 }
