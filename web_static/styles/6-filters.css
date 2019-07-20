@@ -30,6 +30,7 @@ width: 25%;
 border-right: 1px;
 border-right-color: #DDDDDD;
 border-right-style: solid;
+z-index: 1;
 }
 .filters div {
   width: 25%;
@@ -38,6 +39,7 @@ border-right-style: solid;
   height: 100%;
   width: 25%;
   border-right: 1px;
+  z-index: 1;
 }
 h3 {
   font-weight: 600;
